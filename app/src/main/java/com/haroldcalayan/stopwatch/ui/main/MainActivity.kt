@@ -15,7 +15,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     override val layoutId = R.layout.activity_main
     override val viewModel: MainViewModel by viewModels()
 
-    private lateinit var activityScope: CoroutineScope
+    private val activityScope = CoroutineScope(Dispatchers.IO)
+    private var job: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +29,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     override fun onResume() {
         super.onResume()
-        if(viewModel.timerState.value == STARTED) {
-            stopTimer()
-            startTimer()
-        }
+        startTimer()
     }
 
     override fun onPause() {
+        stopTimer()
         super.onPause()
     }
 
@@ -63,16 +62,21 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     private fun startTimer() {
-        activityScope = CoroutineScope(Job() + Dispatchers.Main)
-        activityScope.launch {
-            delay(Constants.ONE_SECOND)
-            viewModel.incrementTime()
-            startTimer()
+        if (job == null) {
+            job = activityScope.launch {
+                while (true) {
+                    if (viewModel.timerState.value == STARTED) {
+                        delay(Constants.ONE_SECOND)
+                        viewModel.incrementTime()
+                    }
+                }
+            }
         }
     }
 
     private fun stopTimer() {
-        activityScope.cancel()
+        job?.cancel()
+        job = null
     }
 
     private fun setTimeDisplay(timeCounter: Int) {
