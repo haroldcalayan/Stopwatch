@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Stopwatch</string>
 
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+
     <!--  Message  -->
     <string name="message_app_requires_permission">I\'m sorry. This app requires all permissions to be granted</string>
 </resources>
