@@ -1,12 +1,15 @@
 package com.haroldcalayan.stopwatch.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import androidx.activity.viewModels
 import com.haroldcalayan.stopwatch.R
+import com.haroldcalayan.stopwatch.base.BaseActivity
+import com.haroldcalayan.stopwatch.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+@AndroidEntryPoint
+class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
+
+    override val layoutId = R.layout.activity_main
+    override val viewModel: MainViewModel by viewModels()
+
 }
