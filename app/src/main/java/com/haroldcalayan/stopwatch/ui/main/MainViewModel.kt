@@ -6,7 +6,6 @@ import com.haroldcalayan.stopwatch.base.BaseViewModel
 import com.haroldcalayan.stopwatch.util.INITIAL
 import com.haroldcalayan.stopwatch.util.STARTED
 import com.haroldcalayan.stopwatch.util.STOPPED
-import com.haroldcalayan.stopwatch.util.TimeState
 
 class MainViewModel : BaseViewModel() {
 
@@ -34,6 +33,7 @@ class MainViewModel : BaseViewModel() {
         if (_timerState.value == INITIAL || _timerState.value == STOPPED) {
             _timerState.postValue(STARTED)
         } else {
+            _timeCounter.postValue(0)
             _timerState.postValue(STOPPED)
         }
     }
